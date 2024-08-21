@@ -1,30 +1,20 @@
 // Função de busca
-document.getElementById('searchInput').addEventListener('keyup', function() {
-    let filter = this.value.toLowerCase();
+document.getElementById('search').addEventListener('input', function () {
+    let input = this.value.toLowerCase();
     let rows = document.querySelector("#productTable tbody").rows;
     
     for (let i = 0; i < rows.length; i++) {
-        let cell = rows[i].cells[0];
-        if (cell.textContent.toLowerCase().indexOf(filter) > -1) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }
-    }
-});
+        let cells = rows[i].cells;
+        let match = false;
 
-// Função de filtro por Margem de Lucro
-document.getElementById('filterProfitMargin').addEventListener('change', function() {
-    let filter = this.value;
-    let rows = document.querySelector("#productTable tbody").rows;
-    
-    for (let i = 0; i < rows.length; i++) {
-        let profitMargin = rows[i].cells[4].textContent;
-        if (filter === "" || profitMargin === filter) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
+        for (let j = 0; j < cells.length; j++) {
+            if (cells[j].textContent.toLowerCase().includes(input)) {
+                match = true;
+                break;
+            }
         }
+
+        rows[i].style.display = match ? "" : "none";
     }
 });
 
@@ -33,31 +23,38 @@ function sortTable(n) {
     let table = document.getElementById("productTable");
     let rows = table.rows;
     let switching = true;
-    let dir = "asc"; 
+    let shouldSwitch, i;
+    let dir = "asc";
     let switchCount = 0;
 
     while (switching) {
         switching = false;
-        for (let i = 1; i < rows.length - 1; i++) {
-            let shouldSwitch = false;
-            let x = rows[i].getElementsByTagName("TD")[n];
-            let y = rows[i + 1].getElementsByTagName("TD")[n];
-            if ((dir == "asc" && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) ||
-                (dir == "desc" && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())) {
+        let rowsArray = Array.from(rows).slice(1); // Ignora o cabeçalho
+
+        for (i = 0; i < (rowsArray.length - 1); i++) {
+            shouldSwitch = false;
+            let x = rowsArray[i].getElementsByTagName("TD")[n];
+            let y = rowsArray[i + 1].getElementsByTagName("TD")[n];
+
+            if (dir === "asc" && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase() ||
+                dir === "desc" && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                 shouldSwitch = true;
                 break;
             }
         }
+
         if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            rowsArray[i].parentNode.insertBefore(rowsArray[i + 1], rowsArray[i]);
             switching = true;
             switchCount++;
-        } else if (switchCount == 0 && dir == "asc") {
+        } else if (switchCount === 0 && dir === "asc") {
             dir = "desc";
             switching = true;
         }
-    };
-    // Filtro por intervalo de Receita Gerada
+    }
+}
+
+// Função de filtro por Receita Gerada
 document.getElementById('minRevenue').addEventListener('input', filterByRevenue);
 document.getElementById('maxRevenue').addEventListener('input', filterByRevenue);
 
@@ -68,51 +65,30 @@ function filterByRevenue() {
     
     for (let i = 0; i < rows.length; i++) {
         let revenue = parseFloat(rows[i].cells[2].textContent.replace('R$', '').replace(',', ''));
-        if (revenue >= minRevenue && revenue <= maxRevenue) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }
-    }
-}
-// 2 Paginação
- let currentPage = 1;
-let rowsPerPage = 10;
-
-function displayTablePage(page) {
-    let rows = document.querySelector("#productTable tbody").rows;
-    let totalRows = rows.length;
-    let start = (page - 1) * rowsPerPage;
-    let end = Math.min(start + rowsPerPage, totalRows);
-    
-    for (let i = 0; i < totalRows; i++) {
-        rows[i].style.display = (i >= start && i < end) ? "" : "none";
+        rows[i].style.display = (revenue >= minRevenue && revenue <= maxRevenue) ? "" : "none";
     }
 }
 
-function setupPagination() {
-    let rows = document.querySelector("#productTable tbody").rows;
-    let totalRows = rows.length;
-    let totalPages = Math.ceil(totalRows / rowsPerPage);
+// Função de exportação para CSV
+function exportTableToCSV(filename) {
+    let csv = [];
+    let rows = document.querySelectorAll("table tr");
 
-    let pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+    for (let i = 0; i < rows.length; i++) {
+        let row = [], cols = rows[i].querySelectorAll("td, th");
 
-    for (let i = 1; i <= totalPages; i++) {
-        let btn = document.createElement("button");
-        btn.textContent = i;
-        btn.addEventListener('click', function() {
-            currentPage = i;
-            displayTablePage(currentPage);
-        });
-        pagination.appendChild(btn);
+        for (let j = 0; j < cols.length; j++)
+            row.push(cols[j].innerText);
+
+        csv.push(row.join(","));
     }
-}
 
-// Inicialize a paginação
-setupPagination();
-displayTablePage(currentPage);
+    let csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
 
-}
-
+    link.click();
 }
