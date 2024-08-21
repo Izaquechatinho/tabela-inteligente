@@ -56,5 +56,24 @@ function sortTable(n) {
             dir = "desc";
             switching = true;
         }
+    };
+    // Filtro por intervalo de Receita Gerada
+document.getElementById('minRevenue').addEventListener('input', filterByRevenue);
+document.getElementById('maxRevenue').addEventListener('input', filterByRevenue);
+
+function filterByRevenue() {
+    let minRevenue = parseFloat(document.getElementById('minRevenue').value) || 0;
+    let maxRevenue = parseFloat(document.getElementById('maxRevenue').value) || Number.MAX_VALUE;
+    let rows = document.querySelector("#productTable tbody").rows;
+    
+    for (let i = 0; i < rows.length; i++) {
+        let revenue = parseFloat(rows[i].cells[2].textContent.replace('R$', '').replace(',', ''));
+        if (revenue >= minRevenue && revenue <= maxRevenue) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
     }
+}
+
 }
