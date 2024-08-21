@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+@ -0,0 +1,19 @@
+>>>>>>> 7c4b370e2be851bd79b7f08f79304858448771e3
 document.addEventListener('DOMContentLoaded', function() {
     // Funções para manipular a tabela
     // Exemplo: carregando dados fictícios
