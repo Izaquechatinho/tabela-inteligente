@@ -74,6 +74,44 @@ function filterByRevenue() {
             rows[i].style.display = "none";
         }
     }
+    // 2 Paginação
+ let currentPage = 1;
+let rowsPerPage = 10;
+
+function displayTablePage(page) {
+    let rows = document.querySelector("#productTable tbody").rows;
+    let totalRows = rows.length;
+    let start = (page - 1) * rowsPerPage;
+    let end = Math.min(start + rowsPerPage, totalRows);
+    
+    for (let i = 0; i < totalRows; i++) {
+        rows[i].style.display = (i >= start && i < end) ? "" : "none";
+    }
+}
+
+function setupPagination() {
+    let rows = document.querySelector("#productTable tbody").rows;
+    let totalRows = rows.length;
+    let totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    let pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        let btn = document.createElement("button");
+        btn.textContent = i;
+        btn.addEventListener('click', function() {
+            currentPage = i;
+            displayTablePage(currentPage);
+        });
+        pagination.appendChild(btn);
+    }
+}
+
+// Inicialize a paginação
+setupPagination();
+displayTablePage(currentPage);
+
 }
 
 }
