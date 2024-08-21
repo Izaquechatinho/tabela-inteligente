@@ -74,7 +74,8 @@ function filterByRevenue() {
             rows[i].style.display = "none";
         }
     }
-    // 2 Paginação
+}
+// 2 Paginação
  let currentPage = 1;
 let rowsPerPage = 10;
 
