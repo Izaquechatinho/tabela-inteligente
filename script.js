@@ -21,3 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
         </tr>
     `;
 });
+
+
+document.getElementById('filterProfitMargin').addEventListener('change', function() {
+  let filter = this.value;
+  let rows = document.querySelector("#productTable tbody").rows;
+  
+  for (let i = 0; i < rows.length; i++) {
+    let profitMargin = rows[i].cells[4].textContent;
+    if (filter === "" || profitMargin === filter) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+});
