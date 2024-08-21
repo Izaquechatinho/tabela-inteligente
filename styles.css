@@ -77,3 +77,19 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #f1f1f1;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+document.getElementById('searchInput').addEventListener('keyup', function() {
+  let filter = this.value.toUpperCase();
+  let rows = document.querySelector("#productTable tbody").rows;
+  
+  for (let i = 0; i < rows.length; i++) {
+    let firstCol = rows[i].cells[0].textContent.toUpperCase();
+    if (firstCol.indexOf(filter) > -1) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+});
