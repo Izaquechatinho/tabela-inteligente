@@ -3,49 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela Inteligente</title>
+    <title>Produtos Abrasivos e Metalurgia</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Bem-vindo à Tabela Inteligente</h1>
-    <link rel="stylesheet" href="styles.css">
-    <h2>Tabela de Produtos de Abrasivos e Metalurgia</h2>
-<input type="text" id="searchInput" placeholder="Pesquisar...">
+    <h1>Tabela de Produtos Abrasivos e Metalurgia</h1>
 
-<table id="productTable">
-  <thead>
-    <tr>
-      <th>Produto</th>
-      <th>Volume de Vendas</th>
-      <th>Receita Gerada</th>
-      <th>Frequência de Compra</th>
-      <th>Margem de Lucro</th>
-      <th>Crescimento de Vendas (%)</th>
-      <th>Aceitação de Mercado</th>
-      <th>Menor Devolução</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Lixa Abrasiva A36</td>
-      <td>1000 unidades</td>
-      <td>R$ 50.000,00</td>
-      <td>Mensal</td>
-      <td>20%</td>
-      <td>10%</td>
-      <td>Alta</td>
-      <td>Baixa</td>
-    </tr>
-    <!-- Adicione mais linhas de dados aqui -->
-  <select id="filterProfitMargin">
-  <option value="">Selecionar Margem de Lucro</option>
-  <option value="10%">10%</option>
-  <option value="20%">20%</option>
-  <option value="30%">30%</option>
-  <!-- Adicione outras opções -->
-</select>
+    <!-- Barra de busca -->
+    <input type="text" id="searchInput" placeholder="Buscar por nome do produto...">
 
-  </tbody>
-</table>
- <script src="script.js"></script>
+    <!-- Filtro por Margem de Lucro -->
+    <label for="filterProfitMargin">Margem de Lucro:</label>
+    <select id="filterProfitMargin">
+        <option value="">Selecionar</option>
+        <option value="10%">10%</option>
+        <option value="20%">20%</option>
+        <option value="30%">30%</option>
+    </select>
+
+    <!-- Tabela de Produtos -->
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Produto</th>
+                <th onclick="sortTable(1)">Volume de Vendas</th>
+                <th onclick="sortTable(2)">Receita Gerada (R$)</th>
+                <th onclick="sortTable(3)">Frequência de Compra</th>
+                <th onclick="sortTable(4)">Margem de Lucro</th>
+                <th onclick="sortTable(5)">Crescimento de Vendas (%)</th>
+                <th onclick="sortTable(6)">Aceitação de Mercado</th>
+                <th onclick="sortTable(7)">Menor Devolução</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lixa de Aço</td>
+                <td>1000</td>
+                <td>R$ 20.000,00</td>
+                <td>Mensal</td>
+                <td>20%</td>
+                <td>15%</td>
+                <td>Alta</td>
+                <td>Baixa</td>
+            </tr>
+            <!-- Adicione mais linhas conforme necessário -->
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
 </body>
 </html>
