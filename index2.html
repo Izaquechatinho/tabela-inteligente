@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Produtos</title>
+</head>
+<body>
+    <h1>Buscar Produtos de Ferro, Aço, Abrasivos e Ferramentas</h1>
+
+    <input type="text" id="searchInput" placeholder="Digite o nome do produto">
+    <button onclick="buscarProduto()">Buscar</button>
+
+    <table id="productsTable" border="1">
+        <thead>
+            <tr>
+                <th>Nome do Produto</th>
+                <th>Preço</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados dos produtos serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        async function buscarProduto() {
+            const query = document.getElementById('searchInput').value;
+            const url = `URL_DA_API/produtos?busca=${query}`; // Modifique com a URL correta da API
+            const apiKey = 'SUA_API_KEY'; // Insira sua chave de API aqui
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro na busca de produtos');
+                }
+
+                const dados = await response.json();
+                atualizarTabelaComProdutos(dados);
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        function atualizarTabelaComProdutos(produtos) {
+            const tabela = document.getElementById('productsTable').getElementsByTagName('tbody')[0];
+            tabela.innerHTML = ''; // Limpar a tabela antes de atualizar
+
+            produtos.forEach(produto => {
+                const linha = tabela.insertRow();
+                linha.insertCell(0).textContent = produto.nome;
+                linha.insertCell(1).textContent = `R$ ${produto.preco}`;
+                linha.insertCell(2).textContent = produto.descricao;
+            });
+        }
+    </script>
+</body>
+</html>
