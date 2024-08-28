@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Peso da Tesoura Metálica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, select {
+            margin: 10px 0;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cálculo de Peso da Tesoura Metálica</h1>
+
+    <label for="vão">Largura da Tesoura (em metros):</label>
+    <input type="number" id="vão" min="1" placeholder="Digite a largura do vão" required>
+
+    <button onclick="calcularPeso()">Calcular Peso</button>
+
+    <div class="result" id="resultado"></div>
+
+    <script>
+        function calcularPeso() {
+            const vão = document.getElementById('vão').value;
+            let banzoPesoPorMetro = 0, montantePesoPorMetro = 0, materiais = "";
+
+            if (vão <= 5) {
+                materiais = "Viga U 75x35x1,9mm, Cantoneira 7/8\" com espessura 1/8\"";
+                banzoPesoPorMetro = 2.16;  // Peso por metro da Viga U 75x35x1,9mm
+                montantePesoPorMetro = 2.0;  // Peso estimado para a Cantoneira 7/8"
+            } else if (vão <= 10) {
+                materiais = "Viga U 100x50x2,5mm, Cantoneira 1 1/4\" com espessura 1/8\"";
+                banzoPesoPorMetro = 3.5;  // Peso por metro da Viga U 100x50x2,5mm
+                montantePesoPorMetro = 3.0;  // Peso estimado para a Cantoneira 1 1/4"
+            } else if (vão <= 15) {
+                materiais = "Perfil I 150x75x3,5mm, Cantoneira 1 1/2\" com espessura 3/16\" ou Tubo Retangular 60x30x2mm";
+                banzoPesoPorMetro = 7.1;  // Peso por metro do Perfil I 150x75x3,5mm
+                montantePesoPorMetro = 4.0;  // Peso estimado para Cantoneira 1 1/2" ou Tubo Retangular
+            } else if (vão <= 20) {
+                materiais = "Perfil I 200x100x4mm, Cantoneira 2\" com espessura 3/16\" ou Tubo Retangular 80x40x2,5mm";
+                banzoPesoPorMetro = 11.0;  // Peso por metro do Perfil I 200x100x4mm
+                montantePesoPorMetro = 6.0;  // Peso estimado para Cantoneira 2" ou Tubo Retangular
+            } else if (vão <= 25) {
+                materiais = "Perfil W 250x150x6mm, Tubo Retangular 100x50x3mm";
+                banzoPesoPorMetro = 15.5;  // Peso por metro do Perfil W 250x150x6mm
+                montantePesoPorMetro = 8.0;  // Peso estimado para Tubo Retangular 100x50x3mm
+            } else if (vão <= 30) {
+                materiais = "Perfil W 300x200x8mm, Tubo Retangular 120x60x3mm";
+                banzoPesoPorMetro = 22.0;  // Peso por metro do Perfil W 300x200x8mm
+                montantePesoPorMetro = 10.0;  // Peso estimado para Tubo Retangular 120x60x3mm
+            } else if (vão <= 40) {
+                materiais = "Perfil W 350x250x10mm, Tubo Retangular 150x80x4mm";
+                banzoPesoPorMetro = 31.0;  // Peso por metro do Perfil W 350x250x10mm
+                montantePesoPorMetro = 12.0;  // Peso estimado para Tubo Retangular 150x80x4mm
+            } else if (vão <= 50) {
+                materiais = "Perfil W 400x300x12mm, Tubo Retangular 180x100x4,5mm";
+                banzoPesoPorMetro = 42.0;  // Peso por metro do Perfil W 400x300x12mm
+                montantePesoPorMetro = 15.0;  // Peso estimado para Tubo Retangular 180x100x4,5mm
+            }
+
+            const banzoPesoTotal = 2.3 * vão * banzoPesoPorMetro;
+            const montantePesoTotal = 4.5 * vão * montantePesoPorMetro;
+            const pesoTotal = banzoPesoTotal + montantePesoTotal;
+
+            document.getElementById('resultado').innerHTML = `
+                <p>Materiais recomendados: ${materiais}</p>
+                <p>Peso Total da Tesoura: ${pesoTotal.toFixed(2)} kg</p>
+            `;
+        }
+    </script>
+</body>
+</html>
